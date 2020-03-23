@@ -7,10 +7,22 @@ import 'package:brew_crew/services/database.dart';
 import 'brew_list.dart';
 
 class Home extends StatelessWidget {
+
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
+
+    void _showSettingsPanel() {
+      showModalBottomSheet( context: context, builder: (context) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+            child: Text('Bottom sheet'),
+          );
+        }
+      );
+    }
+
     return StreamProvider<List<Brew>>.value(
       value: DatabaseService().brews,
       child: Scaffold(
@@ -26,6 +38,13 @@ class Home extends StatelessWidget {
               onPressed: () async {
                 await _auth.signOut();
               },
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.settings), 
+              label: Text('Settings'),
+              onPressed: () {
+                _showSettingsPanel();
+              }, 
             ),
           ],
         ),
