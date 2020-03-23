@@ -62,8 +62,8 @@ class _SettingsFormState extends State<SettingsForm> {
                   SizedBox(height: 20.0),
                   Slider(
                     value: (_currentStrength ?? userData.strength).toDouble(),
-                    activeColor: Colors.brown[_currentStrength ?? 100],
-                    inactiveColor: Colors.brown[_currentStrength ?? 100],
+                    activeColor: Colors.brown[_currentStrength ?? userData.strength],
+                    inactiveColor: Colors.brown[_currentStrength ?? userData.strength],
                     min: 100.0,
                     max: 900.0,
                     divisions: 8,
@@ -77,9 +77,14 @@ class _SettingsFormState extends State<SettingsForm> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {
-                      print(_currentName);
-                      print(_currentStrength);
-                      print(_currentSugars);
+                      if(_formKey.currentState.validate()) {
+                        await DatabaseService(uid: user.uid).updateUserData(
+                          _currentSugars ?? userData.sugars,
+                          _currentName ?? userData.name,
+                          _currentStrength ?? userData.strength
+                        );
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ],
